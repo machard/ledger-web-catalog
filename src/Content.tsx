@@ -17,6 +17,7 @@ const styles = (theme: Theme) =>
     },
     card: {
       width: 345,
+      minWidth: 345,
       display: "inline-block",
       margin: theme.spacing(3, 2),
     },
