@@ -13,6 +13,7 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
+      flexWrap: "wrap",
       justifyContent: "center",
     },
     card: {
