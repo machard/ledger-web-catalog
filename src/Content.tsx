@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -7,7 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
-import stream from "./stream";
+import client from "./client";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -33,11 +33,13 @@ const styles = (theme: Theme) =>
   });
 
 export interface ContentProps extends WithStyles<typeof styles> {
-  apps: any[]
+  apps: any[],
+  installed: any,
+  fetchInstalled: Function,
 }
 
 function Content(props: ContentProps) {
-  const { classes, apps } = props;
+  const { classes, apps, fetchInstalled, installed } = props;
 
   return (
     <div className={classes.root}>
@@ -59,16 +61,26 @@ function Content(props: ContentProps) {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button size="small" color="primary" onClick={() => {
-              // @ts-ignore
-              stream.write(JSON.stringify({
-                type: "apps",
-                method: "addApp",
-                args: [app]
-              }))
-            }}>
+            {!installed[app.url] ? <Button
+              size="small"
+              color="primary"
+              onClick={async () => {
+                await client.request( "apps", "addApp", [app]);
+                fetchInstalled();
+              }}
+            >
               Add
-            </Button>
+            </Button> : null}
+            {installed[app.url] ? <Button
+              size="small"
+              color="secondary"
+              onClick={async () => {
+                await client.request( "apps", "removeApp", [app.url]);
+                fetchInstalled();
+              }}
+            >
+              Remove
+            </Button> : null}
             <Button size="small" color="primary">
               Learn More
             </Button>

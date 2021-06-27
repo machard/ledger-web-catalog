@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Theme,
   createStyles,
@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core/styles';
 import Content from './Content';
 import Header from './Header';
+import client from "./client";
 
 const styles = (theme: Theme) => createStyles({
   main: {
@@ -18,11 +19,11 @@ const styles = (theme: Theme) => createStyles({
   },
 });
 
-const categories = ["Popular", "Wallet", "Trading", "Borrowing/Lending"];
+const categories = ["Installed", "Wallet", "Trading", "Borrowing/Lending"];
 
 const apps = [
   {
-    categories: ["Popular", "Wallet"],
+    categories: ["Wallet"],
     name: "Wallet BTC",
     description: "Bitcoin (₿) is a decentralized digital currency, without a central bank or single administrator, that can be sent from user to user on the peer-to-peer bitcoin network without the need for intermediaries",
     image: "https://bitcoin.org/img/icons/opengraph.png?1621851118",
@@ -69,13 +70,29 @@ function Paperbase(props: PaperbaseProps) {
   const { classes } = props;
   const [category, setCategory] = useState(0);
 
-  const selectedApps = apps.filter(app => app.categories.includes(categories[category]));
+  const [installed, setInstalled] = useState<any>([]);
+
+  const fetchInstalled = async () => {
+    const installed: any[] = await client.request("apps", "list", []);
+    setInstalled(installed.reduce((map, app) => ({
+      ...map,
+      [app.url]: app
+    }), {}));
+  }
+
+  useEffect(() => {
+    fetchInstalled()
+  }, []);
+
+  const selectedApps = category
+    ? apps.filter(app => app.categories.includes(categories[category]))
+    : Object.values(installed);
 
   return (
     <React.Fragment>
       <Header categories={categories} setCategory={setCategory} category={category} />
       <main className={classes.main}>
-      <Content apps={selectedApps} />
+      <Content apps={selectedApps} fetchInstalled={fetchInstalled} installed={installed} />
       </main>
     </React.Fragment>
   );
