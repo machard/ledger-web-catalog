@@ -60,7 +60,14 @@ function Header(props: HeaderProps) {
               </Typography>
             </Grid>
             <Grid item>
-              <Button className={classes.button} variant="outlined" color="inherit" size="small">
+              <Button
+                target="_blank"
+                href="https://github.com/machard/ledger-web-catalog#submit-your-app"
+                className={classes.button}
+                variant="outlined"
+                color="inherit"
+                size="small"
+              >
                 Submit your app
               </Button>
             </Grid>
