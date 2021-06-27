@@ -6,6 +6,7 @@ import {
   WithStyles,
 } from '@material-ui/core/styles';
 import Content from './Content';
+import Developer from "./Developer";
 import Header from './Header';
 import client from "./client";
 
@@ -92,7 +93,11 @@ function Paperbase(props: PaperbaseProps) {
     <React.Fragment>
       <Header categories={categories} setCategory={setCategory} category={category} />
       <main className={classes.main}>
-      <Content apps={selectedApps} fetchInstalled={fetchInstalled} installed={installed} />
+      {category < categories.length ?
+        (<Content apps={selectedApps} fetchInstalled={fetchInstalled} installed={installed} />)
+      :
+        (<Developer fetchInstalled={fetchInstalled} />)
+      }
       </main>
     </React.Fragment>
   );

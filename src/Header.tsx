@@ -78,6 +78,7 @@ function Header(props: HeaderProps) {
           {categories.map((category, i) =>
             <Tab key={i} textColor="inherit" label={category} onClick={() => setCategory(i)} />
           )}
+          <Tab key={categories.length} textColor="inherit" label={"Developer"} onClick={() => setCategory(categories.length)} />
         </Tabs>
       </AppBar>
     </React.Fragment>
