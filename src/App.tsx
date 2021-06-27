@@ -53,7 +53,7 @@ function Paperbase(props: PaperbaseProps) {
       <Header categories={categories} setCategory={setCategory} category={category} />
       <main className={classes.main}>
       {category < categories.length ?
-        (<Content apps={selectedApps} fetchInstalled={fetchInstalled} installed={installed} />)
+        (<Content category={category} apps={selectedApps} fetchInstalled={fetchInstalled} installed={installed} />)
       :
         (<Developer fetchInstalled={fetchInstalled} />)
       }

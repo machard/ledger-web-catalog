@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
 import client from "./client";
+import { Paper } from '@material-ui/core';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -29,17 +30,24 @@ const styles = (theme: Theme) =>
       height: 100,
       width: "100%",
       textOverflow: "ellipsis"
-    }
+    },
+    paper: {
+      display: "flex",
+      flexDirection: "column",
+      flex: 1,
+      padding: theme.spacing(3, 3)
+    },
   });
 
 export interface ContentProps extends WithStyles<typeof styles> {
   apps: any[],
   installed: any,
   fetchInstalled: Function,
+  category: number,
 }
 
 function Content(props: ContentProps) {
-  const { classes, apps, fetchInstalled, installed } = props;
+  const { classes, category, apps, fetchInstalled, installed } = props;
 
   return (
     <div className={classes.root}>
@@ -87,6 +95,11 @@ function Content(props: ContentProps) {
           </CardActions>
         </Card>
       )}
+      {category === 0 && !apps.length ? (
+        <Paper className={classes.paper}>
+          Start by adding an app, Wallet BTC for example.
+        </Paper>
+      ): null}
     </div>
   );
 }
