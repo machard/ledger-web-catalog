@@ -1,6 +1,7 @@
 # ledger-web-catalag
 
 App that manages ledger web apps
+Should be running inside https://github.com/machard/ledger-web
 
 ## Submit your app
 
