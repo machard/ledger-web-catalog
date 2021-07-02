@@ -7044,9 +7044,10 @@ last-call-webpack-plugin@^3.0.0:
     lodash "^4.17.5"
     webpack-sources "^1.1.0"
 
-ledger-web-client@machard/ledger-web-client:
+ledger-web-client@1.0.0:
   version "1.0.0"
-  resolved "https://codeload.github.com/machard/ledger-web-client/tar.gz/2cc6e884ec90642c53347428c18a59c211c807da"
+  resolved "https://registry.yarnpkg.com/ledger-web-client/-/ledger-web-client-1.0.0.tgz#0494803922bfb30b469759e5094aaf605f2e4e8c"
+  integrity sha512-RQ8QwA9+8ux1hj5dub+YuokBEBD5pMltPGC2olatXyLx+8dKLMM7yEqFAweYmc55CJmeBkNaTGOi59NK33DaPw==
   dependencies:
     "@metamask/post-message-stream" "^4.0.0"
     "@types/readable-stream" "^2.3.10"
