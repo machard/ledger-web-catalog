@@ -9,7 +9,6 @@ import Content from './Content';
 import Developer from "./Developer";
 import Header from './Header';
 import client from "./client";
-import content from "./apps.json";
 
 const styles = (theme: Theme) => createStyles({
   main: {
@@ -21,16 +20,14 @@ const styles = (theme: Theme) => createStyles({
   },
 });
 
-const apps = content.apps;
-const categories = ["Installed"].concat(content.categories);
-
 export interface PaperbaseProps extends WithStyles<typeof styles> {}
 
 function Paperbase(props: PaperbaseProps) {
   const { classes } = props;
   const [category, setCategory] = useState(0);
 
-  const [installed, setInstalled] = useState<any>([]);
+  const [installed, setInstalled] = useState<any>();
+  const [appsData, setAppsData] = useState<any>();
 
   const fetchInstalled = async () => {
     const installed: any[] = await client.request("apps", "list", []);
@@ -39,24 +36,38 @@ function Paperbase(props: PaperbaseProps) {
       [app.url]: app
     }), {}));
   }
+  const fetchAppsData = async () => {
+    const appsData: any = await client.request("apps", "data", []);
+    setAppsData(appsData);
+  }
 
   useEffect(() => {
     fetchInstalled()
+    fetchAppsData()
   }, []);
 
-  const selectedApps = category
-    ? apps.filter(app => app.categories.includes(categories[category]))
-    : Object.values(installed);
+  let content = null; 
+  let categories = ["Installed"];
+
+  if (installed && appsData) {
+    const apps = appsData.apps;
+    const categories = ["Installed"].concat(appsData.categories);
+
+    const selectedApps = category
+      ? apps.filter((app: any) => app.categories.includes(categories[category]))
+      : Object.values(installed);
+
+    content = category < categories.length ?
+      (<Content category={category} apps={selectedApps} fetchInstalled={fetchInstalled} installed={installed} />)
+    :
+      (<Developer fetchInstalled={fetchInstalled} />);
+  }
 
   return (
     <React.Fragment>
       <Header categories={categories} setCategory={setCategory} category={category} />
       <main className={classes.main}>
-      {category < categories.length ?
-        (<Content category={category} apps={selectedApps} fetchInstalled={fetchInstalled} installed={installed} />)
-      :
-        (<Developer fetchInstalled={fetchInstalled} />)
-      }
+        {content}
       </main>
     </React.Fragment>
   );
