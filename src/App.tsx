@@ -46,12 +46,13 @@ function Paperbase(props: PaperbaseProps) {
     fetchAppsData()
   }, []);
 
-  let content = null; 
+  let content = null;
+
   let categories = ["Installed"];
 
   if (installed && appsData) {
     const apps = appsData.apps;
-    const categories = ["Installed"].concat(appsData.categories);
+    categories = ["Installed"].concat(appsData.categories);
 
     const selectedApps = category
       ? apps.filter((app: any) => app.categories.includes(categories[category]))
